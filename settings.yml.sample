@@ -1,0 +1,6 @@
+github:
+  api_key: ""
+  user_agent: ""
+  target_repo: ""
+  notify_delete: "@"
+  notify_else: "@"
