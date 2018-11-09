@@ -24,12 +24,15 @@ This is a Flask app written in Python 3.6.4. You'll need a python environment wi
 ## Todo
 
 * Offload configuration to a settings file not committed to version control
+
   *[x] Create settings.yml file
   *[x] GitHub API Key read from yml
   *[x] GitHub-Hookshot user agent read from yml
   *[x] Comment target repository read from yml
   *[x] Users to notify read from yml
+
 * Enable production [deployment on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python)
+
   *[x] `gunicorn` installed
   *[ ] Deploy to Heroku
   *[ ] Document Heroku deployment
