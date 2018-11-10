@@ -1,0 +1,4 @@
+github:
+  target_repo: "InternationalUnderground/api-demo"
+  notify_delete: "@gboone42"
+  notify_else: "@gboone42"

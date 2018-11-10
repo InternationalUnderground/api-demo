@@ -12,14 +12,17 @@ This is a simple Flask app showing how to use a few different methods in the Git
 This is a Flask app written in Python 3.6.4. You'll need a python environment with `pip` installed to work with this repository. Once you have that follow the steps below.
 
 1. Run `pip install -r requirements.txt` (or `pip3` depending on your installation).
-2. Create a personal API key
-2. Copy `settings.yml.sample` to `settings.yml` and fill in the values for each key.
+2. [Create a personal access token](https://github.com/settings/tokens/new) for the GitHub API. Grant at least the `public_repo` scope. 
 2. Run `gunicorn github-api-demo:app` and go to `127.0.0.1:8000` in a web browser where you should see "Hello World."
-3. Create a webhook in a GitHub Organization:
-  * You can use [ngrok](https://ngrok.io) to get a public url to use for testing webhook delivery. Use the `ngrok` URL with the `/webhooks/` endpoint for the Payload URL.
+3. [Create a webhook](https://github.com/organizations/InternationalUnderground/settings/hooks) in a GitHub Organization you own:
   * Select the "Let me select individual events" option and choose only "Repositories". 
-4. Create, delete, archive, unarchive, privatize, or publicize a repository in your organization.
+2. Copy `settings.yml.sample` to `settings.yml` and fill in the values for each key.
+  * `api_key`, this is the key you created in step 2
+  * `target_repo`, the repository that will receive the new issue
+  * `notify_delete`, users to tag in new issues created when a repo is deleted
+4. Create, delete, archive, unarchive, privatize, or publicize a repository in your organization. The server will return `200` for all webhooks but only create issues for `deleted` actions.
 5. Check webhook delivery was successful by going to this page: https://github.com/organizations/<org>/settings/hooks/ (replace <org> with your organization's name) and choosing the webhook you created in step 3.
+  * You can use [ngrok](https://ngrok.io) to get a public url to use for testing webhook delivery. Use the `ngrok` URL with the `/webhooks/` endpoint for the Payload URL.
 
 ## Todo
 

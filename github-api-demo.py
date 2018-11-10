@@ -7,14 +7,21 @@ import hmac
 
 app = Flask(__name__)
 
-def get_yaml_setting(key):
+def get_config_var(key):
+  if os.environ.get('PROD', None):
+    config_var = os.environ.get(key)
+  else:
+    abort(500)
+
+def get_yaml_var():
   stream = open('settings.yml', 'r')
   settings = load(stream.read())
-  return str(settings['github'][key])
+  config_var = settings[key]
+  return config_var
 
 def is_github_request(request):
   signature = request.headers['X-Hub-Signature'].split('=')
-  key = get_yaml_setting('secret').encode('utf-8')
+  key = get_config_var('secret').encode('utf-8')
   body = request.data
   hashed = hmac.new(key, body, hashlib.sha1)
   digest = hashed.hexdigest()
@@ -30,7 +37,7 @@ def prepare_issue(repo):
   is_deleted = True if action == "deleted" else False
   return (issue_body, is_deleted)
 
-api_key = get_yaml_setting('api_key')
+api_key = get_config_var('GH_KEY')
 g = Github(api_key)
 
 @app.route("/")
@@ -47,14 +54,17 @@ def post_comment_on_delete():
       else:
         abort(403)
       if issue_body[1] == True:
-        notify_on_delete = get_yaml_setting('notify_delete')
-        target_repo = g.get_repo(get_yaml_setting('target_repo'))
+        notify_on_delete = get_yaml_var('notify_delete')
+        target_repo = g.get_repo(get_yaml_var('target_repo'))
         target_repo.create_issue(title='Repository deleted', body="%s cc:%s" % (issue_body[0], notify_on_delete))
         return str(issue_body[0])
       else:
-        notify_else = get_yaml_setting('notify_else')
+        notify_else = get_yaml_var('notify_else')
         return "%s cc: %s" % (issue_body[0], notify_else)
     else:
       return "Not a JSON object. Nothing to do!"
   else:
     return "Not a POST"
+
+if __name__ == '__main__':
+  app.run()
