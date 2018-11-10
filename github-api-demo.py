@@ -18,9 +18,9 @@ def get_yaml_var():
 
 def is_github_request(request):
   signature = request.headers['X-Hub-Signature'].split('=')
-  key = get_config_var('GH_SECRET').encode('utf-8')
+  key = get_config_var('GH_SECRET')
   body = request.data
-  hashed = hmac.new(key, body, hashlib.sha1)
+  hashed = hmac.new(key.encode('utf-8'), body, hashlib.sha1)
   digest = hashed.hexdigest()
   if hmac.compare_digest(signature[1], digest):
     return True
