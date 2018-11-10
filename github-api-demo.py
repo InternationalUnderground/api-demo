@@ -8,10 +8,7 @@ import hmac
 app = Flask(__name__)
 
 def get_config_var(key):
-  if os.environ.get('PROD', None):
-    config_var = os.environ.get(key)
-  else:
-    abort(500)
+  config_var = os.environ.get(key)
 
 def get_yaml_var():
   stream = open('settings.yml', 'r')
@@ -65,6 +62,3 @@ def post_comment_on_delete():
       return "Not a JSON object. Nothing to do!"
   else:
     return "Not a POST"
-
-if __name__ == '__main__':
-  app.run()
