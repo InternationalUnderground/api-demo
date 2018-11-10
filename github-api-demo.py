@@ -8,7 +8,8 @@ import hmac
 app = Flask(__name__)
 
 def get_config_var(key):
-  config_var = os.environ.get(key)
+  config = os.environ.get(key)
+  return str(config)
 
 def get_yaml_var():
   stream = open('settings.yml', 'r')
