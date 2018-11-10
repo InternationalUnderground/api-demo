@@ -14,7 +14,7 @@ def get_config_var(key):
 def get_yaml_var(key):
   stream = open('settings.yml', 'r')
   settings = load(stream.read())
-  config_var = settings[key]
+  config_var = settings['github'][key]
   return config_var
 
 def is_github_request(request):
