@@ -29,8 +29,10 @@ def webhook_verify(request):
   body = request.data
   hashed = hmac.new(key.encode('utf-8'), body, hashlib.sha1)
   digest = hashed.hexdigest()
-  if hmac.compare_digest(signature[1], digest) is not True
+  if hmac.compare_digest(signature[1], digest) is not True:
     return abort(403)
+  else:
+    return True
 
 def prepare_issue(repo):
   repo_name = repo['repository']['full_name']
