@@ -53,6 +53,7 @@ def post_comment_on_delete():
   request_verify(request)
   webhook_verify(request)
   hook = request.get_json(silent =True)
+  issue_body = prepare_issue(hook)
   if issue_body[1] == True:
     notify_on_delete = get_yaml_var('notify_delete')
     target_repo = g.get_repo(get_yaml_var('target_repo'))
