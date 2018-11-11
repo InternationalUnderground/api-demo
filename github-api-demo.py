@@ -29,7 +29,7 @@ def webhook_verify(request):
   body = request.data
   hashed = hmac.new(key.encode('utf-8'), body, hashlib.sha1)
   digest = hashed.hexdigest()
-  if hmac.compare_digest(signature[1], digest) is not True:
+  if hmac.compare_digest(signature[1], digest) != True:
     return abort(403)
   else:
     return True
@@ -37,30 +37,22 @@ def webhook_verify(request):
 def prepare_issue(repo):
   repo_name = repo['repository']['full_name']
   action = repo['action']
-  issue_body = "Repository %s was %s!" % (repo_name, action)
-  is_deleted = True if action == "deleted" else False
-  return (issue_body, is_deleted)
+  notify_on_delete = get_yaml_var('notify_delete')
+  issue_body = "Repository %s was %s! cc: %s" % (repo_name, action, notify_on_delete)
+  return issue_body
 
 api_key = get_config_var('GH_KEY')
 g = Github(api_key)
-
-@app.route("/")
-def hello():
-  return "Hello World"
 
 @app.route("/webhook/", methods=['POST','GET'])
 def post_comment_on_delete():
   request_verify(request)
   webhook_verify(request)
   hook = request.get_json(silent =True)
-  issue_body = prepare_issue(hook)
-  if issue_body[1] == True:
-    notify_on_delete = get_yaml_var('notify_delete')
+  if hook['action'] == 'deleted':
+    issue_body = prepare_issue(hook)
     target_repo = g.get_repo(get_yaml_var('target_repo'))
-    target_repo.create_issue(title='Repository deleted', body="%s cc:%s" % (issue_body[0], notify_on_delete))
+    target_repo.create_issue(title='Repository deleted', body=issue_body)
     return str(issue_body[0])
   else:
-    if notify_else is not None:
-      return "%s cc: %s" % (issue_body[0], notify_else)
-    else:
-      return "%s cc: %s" % (issue_body[0])
+    abort(501) # request is valid there's just nothing to do unless the action is `deleted`

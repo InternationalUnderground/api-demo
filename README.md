@@ -31,7 +31,7 @@ This is a Flask app written in Python 3.6.4. You'll need a python environment wi
 3. Go to `127.0.0.1:8000` in a web browser where you should see "Hello World."
 4. Start `ngrok` with `ngrok http 8000`.
 3. Set the Payload URL for the Webhook to the `ngrok` address at the `/webhook/` endpoint.
-4. Create, delete, archive, unarchive, privatize, or publicize a repository in your organization. The app will return `200` for all webhooks.
+4. Create, archive, unarchive, privatize, or publicize a repository in your organization. The app will return `501 Not Implemented`.
 5. Delete a repository in your organization and you will see a new issue in the repo you set as `target_repo`.
 5. Check webhook delivery was successful by going to this page: https://github.com/organizations/<org>/settings/hooks/ (replace <org> with your organization's name) and choosing the webhook you created in step 3.
 
@@ -50,12 +50,17 @@ This application can be deployed in any environment with Python installed at 3.6
 2. Set environment variables for `GH_KEY` and `GH_SECRET` with `heroku config:set`, for example: `heroku config:set GH_KEY=<key>`. You can verify these by going to the settings page for your app on the Heroku dashboard.
 2. Push the app to Heroku to initiailze a build: `git push heroku master`
 3. Change the Paylod URL to your Heroku app at the `/webhook/` endpoint
-4. Create, delete, archive, unarchive, privatize, or publicize a repository in your organization. The Heroku app will return `200` for all webhooks.
-5. Delete a repository in your organization and you will see a new issue in the repo you set as `target_repo`.
+4. Delete a repository in your organization and you will see a new issue in the repo you set as `target_repo`.
 
 If you don't have another repository to delete, but still want to test the delivery and issue creation, you can resend a webhook you sent earlier. The app will create another issue.
 
 ## Troubleshooting
+
+### 501: Not Implemented
+
+The repository webhook will sent on any of the following actions: Create, delete, archive, unarchive, privatize, or publicize. Since we only have logic to handle `deleted` actions, we return 501 for the rest. 
+
+Solution: Delete a repository to see status 200. This will also post a new issue to `target_repo`. Alternatively, re-send a webhook from a previous deletion.
 
 ### 403: Forbidden Errors
 
