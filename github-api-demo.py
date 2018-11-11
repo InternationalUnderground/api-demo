@@ -18,9 +18,9 @@ def get_yaml_var(key):
   return config_var
 
 def request_verify(request):
-  if request.method is not 'POST':
+  if request.method != 'POST':
     abort(405)
-  if request.content_type is not 'application/json':
+  if request.content_type != 'application/json':
     abort(415)
   
 def webhook_verify(request):
