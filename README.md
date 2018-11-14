@@ -34,12 +34,12 @@ This is a [Flask app](http://flask.pocoo.org/). You'll need a [Python3 environme
 
 ## Production deployment
 
-This application can be deployed in any environment with Python installed at 3.6 or higher and a properly configured webserver. Below are instructions for deploying to Heroku.
+This application can be deployed in any environment with Python 3 (it's tested with 3.7.0) and a properly configured webserver. Below are instructions for deploying to Heroku.
 
 ### Things you'll need:
 
 1. A Heroku account. ([Get one for free](https://signup.heroku.com/).)
-2. The Heorku CLI installed on your computer.
+2. [The Heorku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed and configured on your computer.
 
 ### Setup the application
 
