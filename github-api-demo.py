@@ -53,6 +53,6 @@ def post_comment_on_delete():
     issue_body = prepare_issue(hook)
     target_repo = g.get_repo(get_yaml_var('target_repo'))
     target_repo.create_issue(title='Repository deleted', body=issue_body)
-    return str(issue_body[0])
+    return str(issue_body)
   else:
     abort(501) # request is valid there's just nothing to do unless the action is `deleted`
