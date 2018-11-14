@@ -5,3 +5,7 @@ Thumbs.db
 __pycache__
 *.mdproj
 *.sln
+/bin
+/lib
+pyvenv.cfg
+pip-selfcheck.json

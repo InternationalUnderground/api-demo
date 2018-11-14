@@ -1,18 +1,18 @@
 # GitHub API Demo
 
-This is a simple Flask app that listens for webhooks and files an issue when an Organization's repository is deleted.
+This is a simple app that listens for webhooks and files an issue when another repository in this organization is deleted.
 
-1. Listens for webhooks at /webhooks/
-2. If the webhook describes a repository deletion it will create an issue in a designated repository.
-3. Returns appopriate errors if the webhook does not validate.
+1. Listens for webhooks at /webhooks/.
+2. If the webhook is POSTed and describes a repository deletion it will create an issue in a designated repository.
+3. Returns appopriate status codes if the webhook is not sent as expected.
 
 ## Installation and usage
 
-This is a [Flask app](http://flask.pocoo.org/). You'll need a [Python3 environment](http://flask.pocoo.org/docs/1.0/installation/) to run this application. Once you have that follow the steps below.
+This is a [Flask app](http://flask.pocoo.org/). You'll need a [Python3 environment](http://flask.pocoo.org/docs/1.0/installation/) to run this application. Once you have that follow the steps below. All commands should be run in the project's root directory.
 
-1. Run `pip install -r requirements.txt` in the project's root directory.
+1. Run `pip install -r requirements.txt` to install dependencies.
 2. [Create a personal access token](https://github.com/settings/tokens/new) for the GitHub API. Grant at least the `public_repo` scope.
-3. Set your API key as an environment variable `GH_KEY`. On a UNIX-like system run `echo "export GH_KEY=<key>"" >> ~/.profile` where `<key>` is your access token.
+3. Set your API key as an environment variable `GH_KEY`. On a UNIX-like system, with `zsh` as your shell, run `echo "GH_KEY=<key>"" >> ~/.zshrc`, replacing `<key>` with your API key. Then run `source ~/.zshrc`.
 4. [Create a webhook](https://github.com/organizations/InternationalUnderground/settings/hooks) for a GitHub Organization you own:
   * Set "Content type" to `application/json`
   * Set a Secret. Generate a long, random string and paste it in the "Secret" field. **Keep your secret safe and rotate it if it is ever exposed publicly.**
